@@ -13,7 +13,7 @@ func main() {
 	fmt.Println(age)  // 24
 
 	// passing slice: there is not need
-	// for pointers, it is already a reference
+	// for pointers, maps, they are already a reference
 	// type
 	m := make([]string, 1, 25)
 	fmt.Println(m) // []
