@@ -38,6 +38,23 @@ func main() {
 	fmt.Println(counter())
 	fmt.Println(counter())
 
+	// callback
+	visit([]int{6, 12, 14, 16}, multiplyByTwo)
+
+	// callback with anonymous function
+	visit([]int{6, 12, 14, 16}, func(n int) {
+		fmt.Println(n * 3)
+	})
+
+	// callback filter
+	xs := filter([]int{1, 2, 3, 4}, func(n int) bool {
+		return n > 1
+	})
+
+	fmt.Println(xs)
+
+	fmt.Println(factorial(40))
+
 }
 
 // elég egyszer megadni a típust, ha azonosak
@@ -93,4 +110,35 @@ func makeCounter() func() int {
 		x++
 		return x
 	}
+}
+
+func multiplyByTwo(n int) {
+	fmt.Println(n * 2)
+}
+
+// callback function
+func visit(numbers []int, callback func(int)) {
+	for _, n := range numbers {
+		callback(n)
+	}
+}
+
+// callback filter
+func filter(numbers []int, callback func(int) bool) []int {
+	xs := []int{}
+	for _, n := range numbers {
+		if callback(n) {
+			xs = append(xs, n)
+		}
+	}
+
+	return xs
+}
+
+func factorial(x uint64) uint64 {
+	if x == 0 {
+		return 1
+	}
+
+	return x * factorial(x-1)
 }
