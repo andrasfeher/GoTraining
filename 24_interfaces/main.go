@@ -33,10 +33,44 @@ func info(z Shape) {
 	fmt.Println(z.area())
 }
 
+
+type animal struct {
+	sound string
+}
+
+type dog struct {
+	animal
+	friendly bool
+}
+
+type cat struct {
+	animal
+	annoying bool
+}
+
+// accepts any variable that implements the empty interface
+// so accepts any type because all types implement the empty
+// interface
+func specs(a interface{})  {
+	fmt.Println(a)
+}
+
+
+
 func main() {
 	s := Square{10}
 	c := Circle{5}
 	fmt.Println(s.area())
 	info(s)
 	info(c)
+	
+	
+	fido := dog{animal{"woof"}, true}
+	fifi := cat{animal{"meow"}, true}
+	specs(fido)
+	specs(fifi)
+	
+	// list of any type
+	critters := []interface{}{fido, fifi}
+	fmt.Println(critters)
 }
