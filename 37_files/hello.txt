@@ -1,0 +1,1 @@
+Perhaps the most basic file reading task is slurping a file’s entire contents into memory.
