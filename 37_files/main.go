@@ -19,12 +19,27 @@ func main() {
 	f, err := os.Open("./hello.txt")
 	check(err)
 
+	defer f.Close()
+
 	read5BytesFromBeginning(f)
 	seekToLocation(f)
 	rewind(f)
 	bufferedRead(f)
 
-	f.Close()
+	fw, err := os.Create("./hello3.txt")
+	check(err)
+
+	defer fw.Close()
+
+	dumpStringIntoFile()
+	writeByteSlice(fw)
+	writeString(fw)
+
+	// flush to storage
+	fw.Sync()
+
+	bufferedWriting(fw)
+
 }
 
 func readEntireFileIntoMemory() {
@@ -65,4 +80,33 @@ func bufferedRead(f *os.File) {
 	check(err)
 
 	fmt.Printf("5 bytes: %s\n", string(buffer))
+}
+
+func dumpStringIntoFile() {
+	buffer := []byte("hello")
+	err := ioutil.WriteFile("./hello2.txt", buffer, 0644)
+	check(err)
+
+}
+
+func writeByteSlice(fw *os.File) {
+	byteSlice := []byte{115, 111, 109, 101, 10}
+	wroteBytesCount, err := fw.Write(byteSlice)
+	check(err)
+	fmt.Printf("wrote %d bytes\n", wroteBytesCount)
+
+}
+
+func writeString(fw *os.File) {
+	wroteBytesCount, err := fw.WriteString("hello world")
+	check(err)
+	fmt.Printf("wrote %d bytes\n", wroteBytesCount)
+}
+
+func bufferedWriting(fw *os.File) {
+	bufferedWriter := bufio.NewWriter(fw)
+	wroteBytesCount, err := bufferedWriter.WriteString("buffered hello world\n")
+	check(err)
+	fmt.Printf("wrote %d bytes\n", wroteBytesCount)
+	bufferedWriter.Flush()
 }
